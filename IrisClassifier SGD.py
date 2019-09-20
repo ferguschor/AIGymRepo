@@ -112,10 +112,10 @@ for i in model.parameters():
 
 print("Time: %f" % (end-start))
 
-# plt.plot(train_err[:,0], train_err[:,1], label="train")
-# plt.plot(test_err[:,0], test_err[:,1], label="test")
-# plt.legend(loc='upper left')
-# plt.show()
+plt.plot(train_err[:,0], train_err[:,1], label="train")
+plt.plot(test_err[:,0], test_err[:,1], label="test")
+plt.legend(loc='upper left')
+plt.show()
 
 
 # Find the model accuracy
