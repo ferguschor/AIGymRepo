@@ -5,6 +5,7 @@ import torch.optim
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import backtrader
 from sklearn.linear_model import LogisticRegression
 from IrisDataLoader import Dataset
 from torch.utils import data
@@ -37,7 +38,7 @@ iris = load_iris()
 x = iris.data
 y = iris.target
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=1-train_ratio, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=1-train_ratio)
 
 
 print(x_train)
@@ -123,10 +124,12 @@ sm = nn.Softmax(dim=1)
 print (sm(y_test_pred))
 values, indices = torch.max(sm(y_test_pred), 1)
 match = indices == y_test
+print ("NN Test Accuracy:")
 print (torch.mean(match.type(torch.DoubleTensor)))
 
 # Train basic logistic regression and compare accuracy
 ln = LogisticRegression()
 ln.fit(x_train, y_train)
 ln_y_test = torch.from_numpy(ln.predict(x_test))
+print ("Regression Accuracy:")
 print (torch.mean((y_test==ln_y_test).type(torch.DoubleTensor)))
