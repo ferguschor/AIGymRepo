@@ -2,7 +2,7 @@
 
 This repo contains all the work done in developing and implementing various reinforcement learning techniques on the environments in Doom and Sonic the Hedgehog. This name was selected because it was initially used to test algorithms on the AIGym environments but has evolved to tackle more difficult problems.
 
-The majority of the concepts are built on top of Thomas Simonini's Deep RL Course below. 
+The majority of these projects are built from the concepts introduced in Thomas Simonini's Deep RL Course below. 
 
 https://github.com/simoninithomas/Deep_reinforcement_learning_Course
 
