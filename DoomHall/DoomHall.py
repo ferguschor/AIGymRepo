@@ -35,6 +35,7 @@ from PIL import Image
 
 print(tf.__version__)
 
+
 def create_environment():
     game = DoomGame()
 
@@ -51,6 +52,7 @@ def create_environment():
     possible_actions = [[1 if i == j else 0 for i in range(game.get_available_buttons_size())] for j in range(game.get_available_buttons_size())]
 
     return game, possible_actions
+
 
 def test_environment():
     game, possible_actions = create_environment()
@@ -72,6 +74,7 @@ def test_environment():
         time.sleep(2)
     game.close()
 
+
 # crop image to remove ceiling and change size 
 def preprocess_frame(frame):
     # Greyscale frame already done in our vizdoom config
@@ -92,10 +95,11 @@ def preprocess_frame(frame):
 # Parameters: Deque of frames, new frame to be added
 # Output: Updated deque of frames with new frame, np array stack of updated deque
 
+
 stack_length = 4
 
-def stack_frames(frames_deque, frame, is_new_episode):
 
+def stack_frames(frames_deque, frame, is_new_episode):
 
     if is_new_episode:
         frames_deque = [frame for i in range(stack_length)]
@@ -164,9 +168,10 @@ def pretrain(pretrain_length):
 
         print("Result:", game.get_total_reward())
         # Shows last four frames
-        # show_images(current_state_deque)
+        show_images(current_state_deque)
         # time.sleep(2)
     game.close()
+
 
 # HYPERPARAMETERS----------------------------------------------------------------------------------------------------
 
@@ -459,6 +464,7 @@ def output_check_single(sample_size=5):
         print("Loss: ", tf.keras.losses.mean_squared_error(current_Q, target))
         print(state.shape)
 
+
 def output_check_batch(sample_size=5):
     pretrain(pretrain_length=200)
 
@@ -501,20 +507,22 @@ def output_check_batch(sample_size=5):
     loss = tf.keras.losses.mean_squared_error(y_true=target_Q_batch, y_pred=current_output)
     print("Loss: ", loss)
 
+
 def simple_overfit():
     DQN = DuelDQNetwork(state_size=state_size, num_actions=3, learning_rate=learning_rate)
 
     img = tf.random.uniform((5, *state_size))
     target = np.array([[0, -1, 0], [0,0,100], [0,-6,0], [-1,0,0], [100,0,0]])
     model_output = DQN.model(img)
-    print("Init Output: ",model_output)
+    print("Init Output: ", model_output)
     print("Target: ", target)
 
-    DQN.model.fit(img, target,epochs=1000, verbose=0)
+    DQN.model.fit(img, target, epochs=1000, verbose=0)
     fit_model_output = DQN.model(img)
     print("Fit Output: ", fit_model_output)
 
     print(DQN.model.layers)
+
 
 if __name__ == "__main__":
 

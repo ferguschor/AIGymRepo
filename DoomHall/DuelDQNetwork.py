@@ -118,13 +118,15 @@ if __name__=="__main__":
 
 
     tf.random.set_seed(42)
-    input = tf.random.uniform((5, 84, 84, 4))
+    input = tf.random.uniform((4, 84, 84, 4))
     # input = tf.reshape(input, (-1,84,84,4))
+    zeroes = tf.zeros((1, *state_size))
+    input = tf.concat((input, zeroes), axis=0)
 
     y_pred = DQN.model(input)
     print("Before training: \n", y_pred)
 
-    y_true = np.array([[50, 40, 1], [1, 33, 95], [0, 1, 200], [1, 22, 0], [100, 0, 0]])
+    y_true = np.array([[50, 40, 1], [1, 33, 95], [0, 1, 200], [1, 22, 0], [-100, 0, 0]])
 
     for i in range(1000):
         DQN.fit_gradient(input, y_true)
