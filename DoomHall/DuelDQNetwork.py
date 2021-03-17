@@ -93,7 +93,7 @@ class DuelDQNetwork:
         # Calculates the loss for each sample
         with tf.GradientTape() as tape:
             current_Qs_mb = self.model(state_mb)
-            print("Current_Q_mb: \n{}".format(current_Qs_mb))
+            # print("Current_Q_mb: \n{}".format(current_Qs_mb))
             # Weighted product using ISWeights
             loss = tf.reduce_mean(tf.multiply(tf.reduce_sum(tf.square(target_Qs_mb - current_Qs_mb), axis=1), ISWeights_mb))
         gradients = tape.gradient(loss, self.model.trainable_variables)
@@ -116,11 +116,23 @@ if __name__=="__main__":
     DQN = DuelDQNetwork (state_size=state_size, num_actions=num_actions, learning_rate=learning_rate)
     target = DuelDQNetwork (state_size=state_size, num_actions=num_actions, learning_rate=learning_rate)
 
-    input = tf.random.uniform((4, 84, 84, 4))
-    input = tf.reshape(input, (-1,84,84,4))
 
-    # y_pred = DQN.model(input)
-    # print(y_pred)
+    tf.random.set_seed(42)
+    input = tf.random.uniform((5, 84, 84, 4))
+    # input = tf.reshape(input, (-1,84,84,4))
+
+    y_pred = DQN.model(input)
+    print("Before training: \n", y_pred)
+
+    y_true = np.array([[50, 40, 1], [1, 33, 95], [0, 1, 200], [1, 22, 0], [100, 0, 0]])
+
+    for i in range(1000):
+        DQN.fit_gradient(input, y_true)
+
+    y_pred = DQN.model(input)
+    print("After training: \n", y_pred)
+
+
     # y_true = DQN.model(input)
     # y_true = np.array(y_true)
     # y_true[range(y_true.shape[0]), [0, 1, 2, 2]] = [1, 2, 3, 4]

@@ -174,25 +174,25 @@ def pretrain(pretrain_length):
 state_size = [100, 120, 4]
 action_names = ['move_left', 'move_right', 'shoot', 'move_forward', 'move_backward', 'turn_left', 'turn_right']
 num_actions = len(action_names)
-learning_rate = 0.00025
+learning_rate = 0.0002
 
 # Memory Buffer
-memory_size = 100
+memory_size = 10000
 experience = Memory(capacity=memory_size)
 
 # Training Parameters
 batch_size = 64
 total_episodes = 5000
 max_steps = 5000 # per episode
-target_update = 1
-pre_train_length = 100
+target_update = 1000
+pre_train_length = 10000
 episode_save = 5
 
 # Learning Parameters
 discount_rate = 0.95
 
 # Exploration Paramaters
-decay_rate = 0.00005 # epsilon decay rate per step
+decay_rate = 0.000005 # epsilon decay rate per step
 min_epsilon = 0.01
 max_epsilon = 1.0
 
@@ -270,7 +270,7 @@ def td_train(load_weights=False, timed=False, verbose=False):
             if done:
                 # Can't grab state when the episode is done
                 blank_img = np.zeros((state_size[0], state_size[1]), dtype=np.int)
-                current_state_deque, next_state = stack_frames(current_state_deque, preprocess_frame(blank_img), False)
+                current_state_deque, next_state = stack_frames(current_state_deque, preprocess_frame(blank_img), True)
                 # Save SARSA experience
                 experience.store((current_state, action, reward, next_state, done))
                 step = max_steps

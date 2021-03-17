@@ -23,7 +23,6 @@ class DQNetwork:
         self.num_actions = num_actions
         self.learning_rate = learning_rate
 
-
         # Model structure
         self.model = keras.models.Sequential([
             keras.layers.Conv2D(input_shape=state_size, filters=32, kernel_size=[8,8], strides=[4,4], padding='valid', name='conv1'),
@@ -56,7 +55,6 @@ class DQNetwork:
 
         self.train_loss = keras.metrics.Mean("train_loss", dtype=tf.float32)
 
-
     def single_action_train(self, state_mb, action_mb, target_Qs_mb):
         # Loss = Squared difference between the Q for the selected action and the target Q
         # Calculates the loss for each sample
@@ -82,11 +80,11 @@ class DQNetwork:
 
         self.train_loss(loss)
 
+
 # Memory used to keep track of states
 class Memory():
     def __init__(self, memory_size):
         self.buffer = deque(maxlen=memory_size)
-
 
     def append(self, state):
         self.buffer.append(state)
@@ -100,12 +98,12 @@ class Memory():
     def __len__(self):
         return len(self.buffer)
 
+
 if __name__=="__main__":
     state_size = [84, 84, 4]
     # num_actions = game.get_available_buttons_size()
     num_actions = 3
     learning_rate = 0.0002
-
 
     DQN = DQNetwork (state_size=state_size, num_actions=1, learning_rate=learning_rate)
     # print(DQN.model.layers)
